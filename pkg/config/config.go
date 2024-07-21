@@ -50,6 +50,10 @@ func (s *EncryptedValue) Decode(cfgValue string) error {
 	return nil
 }
 
+func (s *EncryptedValue) EnvDecode(cfgValue string) error {
+	return s.Decode(cfgValue)
+}
+
 func (s *EncryptedValue) String() string {
 	return string(*s)
 }
