@@ -61,3 +61,12 @@ func (s *Value) Int64() int64 {
 
 	return v
 }
+
+func (s *Value) Bool() bool {
+	v, err := strconv.ParseBool(s.String())
+	if err != nil {
+		panic("cannot parse value as bool")
+	}
+
+	return v
+}
