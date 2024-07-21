@@ -1,8 +1,3 @@
-module github.com/alexliesenfeld/go-config-encryption
+module github.com/alexliesenfeld/eenv
 
-go 1.18
-
-require (
-	github.com/joho/godotenv v1.4.0
-	github.com/kelseyhightower/envconfig v1.4.0
-)
+go 1.22
