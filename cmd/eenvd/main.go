@@ -12,7 +12,7 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("Value to eenve: ")
+	fmt.Print("Value to decrypt: ")
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		panic(err.Error())

@@ -24,7 +24,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	fmt.Print("Value to eenvd: ")
+	fmt.Print("Value to encrypt: ")
 	text, err := reader.ReadString('\n')
 	if err != nil {
 		panic(err.Error())
