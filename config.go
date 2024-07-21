@@ -1,4 +1,4 @@
-package go_config_encryption
+package eenv
 
 import (
 	"encoding/hex"
