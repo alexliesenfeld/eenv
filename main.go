@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"go-config-encryption/pkg/config"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/config"
 )
 
 type Config struct {

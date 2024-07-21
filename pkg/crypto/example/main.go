@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"go-config-encryption/pkg/crypto/aesCbc256"
-	"go-config-encryption/pkg/crypto/hash"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/crypto/aesCbc256"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/crypto/hash"
 )
 
 func main() {

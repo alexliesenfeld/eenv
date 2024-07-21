@@ -1,4 +1,4 @@
-module go-config-encryption
+module github.com/alexliesenfeld/go-config-encryption
 
 go 1.18
 

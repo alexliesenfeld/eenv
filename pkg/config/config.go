@@ -6,9 +6,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 
-	"go-config-encryption/pkg/crypto/aesCbc256"
-	"go-config-encryption/pkg/crypto/hash"
-	"go-config-encryption/pkg/regex"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/crypto/aesCbc256"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/crypto/hash"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/regex"
 )
 
 func New(cfg interface{}) (err error) {

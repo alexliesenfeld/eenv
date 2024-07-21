@@ -6,7 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 
-	"go-config-encryption/pkg/pad/pkcs7"
+	"github.com/alexliesenfeld/go-config-encryption/pkg/pad/pkcs7"
 )
 
 func Encrypt(text, secretKey, ivString string) (encrypt string, err error) {
