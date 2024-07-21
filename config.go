@@ -6,6 +6,7 @@ import (
 	"github.com/alexliesenfeld/eenv/regex"
 	"log/slog"
 	"os"
+	"strconv"
 )
 
 // Set this at built time: go build -ldflags "-X 'github.com/alexliesenfeld/eenv.Secret=your_secret_value'"
@@ -50,4 +51,13 @@ func (s *Value) EnvDecode(cfgValue string) error {
 
 func (s *Value) String() string {
 	return string(*s)
+}
+
+func (s *Value) Int64() int64 {
+	v, err := strconv.ParseInt(s.String(), 10, 64)
+	if err != nil {
+		panic("cannot parse value as integer")
+	}
+
+	return v
 }
