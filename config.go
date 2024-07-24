@@ -9,20 +9,35 @@ import (
 	"strconv"
 )
 
-// Set this at built time: go build -ldflags "-X 'github.com/alexliesenfeld/eenv.Secret=your_secret_value'"
-var secretKey string
+// SecretKey is the secret key. You can set this at built time like this:
+// go build -ldflags "-X 'github.com/alexliesenfeld/eenv.SecretKey=your_secret_value'"
+// After initialization, this value will be unset.
+var SecretKey string
 var decodedKey []byte
 
 func init() {
-	if secretKey == "" {
-		secretKey = os.Getenv("ENV_VAR_DECRYPTION_KEY")
+	if SecretKey == "" {
+		// For testing purposes only
+		SecretKey = os.Getenv("ENV_VAR_DECRYPTION_KEY")
 	}
 
+	var secret = SecretKey
+	SecretKey = ""
+
+	if err := SetSecretKey(secret); err != nil {
+		panic(err.Error())
+	}
+}
+
+// SetSecretKey sets a secret key that is encoded in hex format.
+func SetSecretKey(secret string) error {
 	var err error
-	decodedKey, err = hex.DecodeString(secretKey)
+	decodedKey, err = hex.DecodeString(secret)
 	if err != nil {
 		slog.Error("decoding of secret key was not successful")
 	}
+
+	return nil
 }
 
 type Value string
