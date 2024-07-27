@@ -26,6 +26,8 @@ func init() {
 
 	if err := SetSecretKey(secret); err != nil {
 		panic(err.Error())
+	} else if len(decodedKey) == 0 {
+		slog.Warn("decryption key is empty")
 	}
 }
 
