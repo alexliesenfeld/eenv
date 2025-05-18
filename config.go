@@ -52,7 +52,7 @@ func (s *Value) Decode(cfgValue string) error {
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
 
-	decrypted, err := crypto.Decrypt(encrypted, decodedKey, "")
+	decrypted, err := crypto.Decrypt(encrypted, decodedKey)
 	if err != nil {
 		return err
 	}
