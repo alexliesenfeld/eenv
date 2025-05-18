@@ -1,6 +1,7 @@
 package eenv
 
 import (
+	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
 	"github.com/alexliesenfeld/eenv/crypto"
@@ -52,7 +53,9 @@ func (s *Value) Decode(cfgValue string) error {
 	}
 
 	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
-		return fmt.Errorf("could not find an encrypted or plain value")
+		slog.Error("could not find an encrypted or plain value in the provided environment variable value. Using it as plain value. Value SHA1 + Hex: %s. ", fmt.Sprintf("%x", sha1.Sum([]byte(cfgValue))))
+		*s = Value(cfgValue)
+		return nil
 	}
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
