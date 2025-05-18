@@ -47,7 +47,7 @@ type Value string
 
 func (s *Value) Decode(cfgValue string) error {
 	if regex.RegexPlainValue.MatchString(cfgValue) {
-		*s = Value(regex.ExtractEncryptedValue(cfgValue))
+		*s = Value(regex.ExtractPlainValue(cfgValue))
 		return nil
 	}
 
