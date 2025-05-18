@@ -2,11 +2,13 @@ package main
 
 import (
 	"bufio"
+	"crypto/rand"
 	"encoding/hex"
 	"fmt"
-	"github.com/alexliesenfeld/eenv/crypto"
 	"os"
 	"strings"
+
+	"github.com/alexliesenfeld/eenv/crypto"
 )
 
 func main() {
@@ -15,27 +17,36 @@ func main() {
 	fmt.Print("Secret Key: ")
 	secretKey, err := reader.ReadString('\n')
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	secretKey = strings.TrimSpace(secretKey)
 	decodedSecretKey, err := hex.DecodeString(secretKey)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	fmt.Print("Value to encrypt: ")
 	text, err := reader.ReadString('\n')
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	text = strings.TrimSpace(text)
 
-	encrypted, err := crypto.Encrypt(text, decodedSecretKey, "")
+	// Generate random IV
+	iv := make([]byte, 16)
+	_, err = rand.Read(iv)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
-	fmt.Println(encrypted)
+	encrypted, err := crypto.Encrypt(text, decodedSecretKey, string(iv))
+	if err != nil {
+		panic(err)
+	}
+
+	// Prepend IV to ciphertext
+	result := append(iv, []byte(encrypted)...)
+	fmt.Println(hex.EncodeToString(result))
 }
