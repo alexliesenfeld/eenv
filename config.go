@@ -53,7 +53,7 @@ func (s *Value) Decode(cfgValue string) error {
 	}
 
 	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
-		slog.Error("could not find an encrypted or plain value in the provided environment variable value. Using it as plain value. Value SHA1 + Hex: %s. ", fmt.Sprintf("%x", sha1.Sum([]byte(cfgValue))))
+		slog.Warn("could not find an encrypted or plain value in the provided value, assuming it is a plain value (value SHA1 + Hex: %s)", fmt.Sprintf("%x", sha1.Sum([]byte(cfgValue))))
 		*s = Value(cfgValue)
 		return nil
 	}
