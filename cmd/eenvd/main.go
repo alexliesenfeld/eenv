@@ -32,7 +32,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	encrypted, err := crypto.Decrypt(text, decodedSecretKey, "")
+	encrypted, err := crypto.Decrypt(text, decodedSecretKey)
 	if err != nil {
 		panic(err.Error())
 	}
