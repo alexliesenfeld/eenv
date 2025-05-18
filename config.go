@@ -2,6 +2,7 @@ package eenv
 
 import (
 	"encoding/hex"
+	"fmt"
 	"github.com/alexliesenfeld/eenv/crypto"
 	"github.com/alexliesenfeld/eenv/regex"
 	"log/slog"
@@ -45,9 +46,13 @@ func SetSecretKey(secret string) error {
 type Value string
 
 func (s *Value) Decode(cfgValue string) error {
-	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
+	if regex.RegexPlainValue.MatchString(cfgValue) {
 		*s = Value(cfgValue)
 		return nil
+	}
+
+	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
+		return fmt.Errorf("could not find an encrypted or plain value")
 	}
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
