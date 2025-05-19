@@ -44,18 +44,16 @@ func SetSecretKey(secret string) error {
 	return nil
 }
 
-type Value string
+type Var string
 
-func (s *Value) Decode(cfgValue string) error {
+func (s *Var) Decode(cfgValue string) error {
 	if regex.RegexPlainValue.MatchString(cfgValue) {
-		*s = Value(regex.ExtractPlainValue(cfgValue))
+		*s = Var(regex.ExtractPlainValue(cfgValue))
 		return nil
 	}
 
 	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
-		slog.Warn("could not find an encrypted or plain value in the provided value, assuming it is a plain value (value SHA1 + Hex: %s)", fmt.Sprintf("%x", sha1.Sum([]byte(cfgValue))))
-		*s = Value(cfgValue)
-		return nil
+		return fmt.Errorf("could not find an encrypted or plain value in the provided value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
@@ -65,20 +63,27 @@ func (s *Value) Decode(cfgValue string) error {
 		return err
 	}
 
-	*s = Value(decrypted)
+	*s = Var(decrypted)
 
 	return nil
 }
 
-func (s *Value) EnvDecode(cfgValue string) error {
-	return s.Decode(cfgValue)
+func (s *Var) EnvDecode(cfgValue string) error {
+	if err := s.Decode(cfgValue); err != nil {
+		// This interface implements github.com/sethvargo/go-envconfig decoding interface.
+		// By default, the decoder will print out the plain-text value if we return an error here.
+		// Therefore, we panic instead to prevent leaking secrets.
+		panic(err.Error())
+	}
+
+	return nil
 }
 
-func (s *Value) String() string {
+func (s *Var) String() string {
 	return string(*s)
 }
 
-func (s *Value) Int64() int64 {
+func (s *Var) Int64() int64 {
 	v, err := strconv.ParseInt(s.String(), 10, 64)
 	if err != nil {
 		panic("cannot parse value as integer")
@@ -87,7 +92,7 @@ func (s *Value) Int64() int64 {
 	return v
 }
 
-func (s *Value) Bool() bool {
+func (s *Var) Bool() bool {
 	v, err := strconv.ParseBool(s.String())
 	if err != nil {
 		panic("cannot parse value as bool")
