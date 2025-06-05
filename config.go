@@ -17,6 +17,8 @@ import (
 var SecretKey string
 var decodedKey []byte
 
+var Debug = false
+
 func init() {
 	if SecretKey == "" {
 		// For testing purposes only
@@ -53,13 +55,21 @@ func (s *Var) Decode(cfgValue string) error {
 	}
 
 	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
-		return fmt.Errorf("could not find an encrypted or plain value in the provided value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
+		if Debug {
+			return fmt.Errorf("could not match an encrypted or plain value in the provided value (value SHA1 + Hex: %x, hint: %v)", sha1.Sum([]byte(cfgValue)), cfgValue[0])
+		}
+
+		return fmt.Errorf("could not match an encrypted or plain value in the provided value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
 
 	decrypted, err := crypto.Decrypt(encrypted, decodedKey)
 	if err != nil {
+		if Debug {
+			return fmt.Errorf("error decoding decrypting value (value SHA1 + Hex: %x, hint: %v)", sha1.Sum([]byte(cfgValue)), cfgValue[0])
+		}
+
 		return fmt.Errorf("error decoding decrypting value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
