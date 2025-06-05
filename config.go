@@ -60,7 +60,7 @@ func (s *Var) Decode(cfgValue string) error {
 
 	decrypted, err := crypto.Decrypt(encrypted, decodedKey)
 	if err != nil {
-		return err
+		return fmt.Errorf("error decoding decrypting value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
 	*s = Var(decrypted)
