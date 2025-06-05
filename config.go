@@ -17,8 +17,6 @@ import (
 var SecretKey string
 var decodedKey []byte
 
-var Debug = false
-
 func init() {
 	if SecretKey == "" {
 		// For testing purposes only
