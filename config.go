@@ -53,14 +53,14 @@ func (s *Var) Decode(cfgValue string) error {
 	}
 
 	if !regex.RegexEncryptedValue.MatchString(cfgValue) {
-		return fmt.Errorf("could not match an encrypted or plain value in the provided value (value SHA1 + Hex: %x, hint: %v)", sha1.Sum([]byte(cfgValue)), cfgValue[0])
+		return fmt.Errorf("could not match an encrypted or plain value in the provided value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
 	encrypted := regex.ExtractEncryptedValue(cfgValue)
 
 	decrypted, err := crypto.Decrypt(encrypted, decodedKey)
 	if err != nil {
-		return fmt.Errorf("error decoding decrypting value (value SHA1 + Hex: %x, hint: %v)", sha1.Sum([]byte(cfgValue)), cfgValue[0])
+		return fmt.Errorf("error decoding decrypting value (value SHA1 + Hex: %x)", sha1.Sum([]byte(cfgValue)))
 	}
 
 	*s = Var(decrypted)
