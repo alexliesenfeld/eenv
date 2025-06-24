@@ -3,8 +3,8 @@ package regex
 import "regexp"
 
 var (
-	RegexEncryptedValue = regexp.MustCompile(`^ENC\((.*?)+\)`)
-	RegexPlainValue     = regexp.MustCompile(`^PLAIN\((.*?)+\)`)
+	RegexEncryptedValue = regexp.MustCompile(`^ENC\((.*?)\)$`)
+	RegexPlainValue     = regexp.MustCompile(`^PLAIN\((.*?)\)$`)
 )
 
 func ExtractEncryptedValue(msg string) string {
